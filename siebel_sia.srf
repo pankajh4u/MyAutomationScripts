@@ -1,0 +1,18 @@
+ Volume in drive C is Windows
+ Volume Serial Number is 8E6B-2787
+
+ Directory of C:\Users\PANKAJMISHRA\Desktop\MyGitProject
+
+03-05-2019  14:40    <DIR>          .
+03-05-2019  14:40    <DIR>          ..
+03-05-2019  12:57               875 AutoLogin.py
+03-05-2019  12:45             2,310 core_count.sh
+03-05-2019  13:00             2,365 creating_aws_infra_using_terraform.tf
+03-05-2019  13:10               619 file_last_access1.sh
+03-05-2019  14:40                 0 siebel_sia.srf
+03-05-2019  14:23                 0 siebel_sia.srf.filepart
+03-05-2019  11:53               354 test.txt
+03-05-2019  13:41               699 test1.txt
+03-05-2019  12:29             1,520 WFProcMgr_Hung_threads.txt
+               9 File(s)          8,742 bytes
+               2 Dir(s)  119,268,020,224 bytes free
