@@ -1,0 +1,43 @@
+#!/bin/bash
+cd /ci/cir3/siebsrvr; . ./siebenv.sh; cd bin
+srvrmgr -g ciprd5gw01:2320 -e ciprdentr5 -u ams004 /p ******* /i srvrmgr_hung_pcs.in /o srvrmgr_hung_pcs.out
+cat srvrmgr_hung_pcs.out| awk {'print $1, $2, $5, $6, $7'}| awk 'NR>=25' > results.txt
+input="/ci/cir3/siebsrvr/bin/results.txt"
+while IFS= read -r var
+do
+        echo "$var"
+done < "$input"
+File_path=/ci/cir3/siebsrvr/bin/results.txt
+line_number=1;
+DATE=$(date +%s)
+task_ids=""
+found=0
+while read line; do
+   line_number=`expr $line_number + 1`;
+   if [ $line_number -gt 3 ];
+   then
+     date=`echo $line | awk '{print $4}'`
+     time=`echo $line | awk '{print $5}'`
+     Task_id=`echo $line | awk '{print $2}'`
+     Server_Name=`echo $line | awk '{print $1}'`
+     Task_status=`echo $line | awk '{print $3}'`
+       if [[ $time = 'error' ]] || [[ $time = '' ]]
+         then
+           continue
+        fi
+     epoch=`date +%s --date "$date $time"`
+     lapsed=`expr $DATE - $epoch`
+     if [ $lapsed -gt 14400 ] && [ $Task_status="Running" ]
+     then
+                task_ids="$task_ids $Task_id[$Server_Name]"
+                found=1
+     fi
+   fi
+done < $File_path
+if [ $found = 1 ]
+   then
+          echo "TASK_ID=$task_ids with Status=RUNNING is running for more than four hours, please investigate " | mail -s "Hung Wf ProcMgr Threads" <email address>
+else
+          echo "No long runing task found for WfProcMgr" | mail -s "Hung WfprocMgr Threads" <email address>,<email address>,<email address>
+fi
+
